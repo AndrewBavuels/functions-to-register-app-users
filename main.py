@@ -1,14 +1,30 @@
-# Function to validate user input (name, email, and password)
+import inspect
 def validate_user(name, email, password):
-    # Validate the name: must be a string and at least 2 characters long
+    """
+    Validate each one of the user inputs to register for an App.
+    
+    Parameters
+    ----------
+    
+    Args:
+        name (str): text the user name as a string type and at least 2 characters long.
+        email (str): text the user email and include a '@' and a valid domain ('.').
+        password: create a strong password with at least 8 characters and include certain characters.
+    
+    Returns
+    -------
+        bool: returns True if all validations inputs pass.
+
+    """
+    
     if len(name) < 2 or not isinstance(name, str):
         raise ValueError("The name must be greater than two characters and in text format.")
 
-    # Validate the email: must contain '@' and a valid domain ('.')
+    
     if '@' not in email or '.' not in email.split('@')[-1]:
         raise ValueError("The email must contain a valid format and domain.")
 
-    # Validate the password: it must be at least 8 characters and include certain characters
+    
     if len(password) < 8:
         raise ValueError("The password must be greater than 8 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character.")
 
@@ -28,7 +44,9 @@ def validate_user(name, email, password):
     if not any(p in "!@#$%^&*()-_=+[]{}|;:'\",.<>?/" for p in password):
         raise ValueError("The password must include at least one special character.")
 
-    return True  # If all validations pass, return True
+    return True
+print(validate_user.__doc__)
+print(inspect.getdoc(validate_user))
 
 # Function to register the user if the input is valid
 def register_user(name, email, password):
