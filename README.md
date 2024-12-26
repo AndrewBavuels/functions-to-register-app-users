@@ -6,9 +6,11 @@ This project implements a simple Python-based system to validate and register us
 
 The project structure is as follows:
 
+```sh
 └── register_user/
     ├── README.md
     └── main.py
+```
 
 ## Features
 
