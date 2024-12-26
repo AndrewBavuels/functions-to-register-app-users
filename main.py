@@ -50,6 +50,22 @@ print(inspect.getdoc(validate_user))
 
 # Function to register the user if the input is valid
 def register_user(name, email, password):
+    """
+    Register the previous validated user inputs to register for an App.
+    
+    Parameters
+    ----------
+    
+    Args:
+        name (str): text the user name as a string type and at least 2 characters long.
+        email (str): text the user email and include a '@' and a valid domain ('.').
+        password: create a strong password with at least 8 characters and include certain characters.
+    
+    Returns
+    -------
+        Dict.
+
+    """    
     try:
         # Call validate_user to check if the user details are valid
         if validate_user(name, email, password):
@@ -61,5 +77,7 @@ def register_user(name, email, password):
         return str(e)  # Return the error message
 
 # Example usage: Attempt to register a user with valid data
+print(register_user.__doc__)
+print(inspect.getdoc(register_user))
 user = register_user('John', 'john@example.uk.es.com', 'securePassword123!')
 print(user)  # Print the user dictionary if registration is successful
