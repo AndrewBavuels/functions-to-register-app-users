@@ -1,4 +1,6 @@
 import inspect
+from getpass import getpass
+
 def validate_user(name, email, password):
     """
     Validate each one of the user inputs to register for an App.
@@ -16,15 +18,20 @@ def validate_user(name, email, password):
         bool: returns True if all validations inputs pass.
 
     """
-    
+    # Check if the name is at least 2 characters long     
     if len(name) < 2 or not isinstance(name, str):
-        raise ValueError("The name must be greater than two characters and in text format.")
+        raise ValueError("Please make sure your name is greater than 2 characters! And in text format!")
 
+    # Check if the user email includes a '@' and a valid domain ('.')
+    valid_domains = ['.org', '.net', '.edu', '.ac', '.uk', '.com']
+    if email.count('@') != 1:
+        raise ValueError("Email must contain exactly one '@' symbol.")
     
-    if '@' not in email or '.' not in email.split('@')[-1]:
-        raise ValueError("The email must contain a valid format and domain.")
+    domain_part = email.split('@')[1]  # Get the part after '@'
+    if not any(domain_part.endswith(domain) for domain in valid_domains):
+        raise ValueError(f"Your email domain must end with one of the following: {', '.join(valid_domains)}")
 
-    
+    # Check if the password is greater than 8 characters
     if len(password) < 8:
         raise ValueError("The password must be greater than 8 characters and include at least one uppercase letter, one lowercase letter, one number, and one special character.")
 
@@ -45,8 +52,8 @@ def validate_user(name, email, password):
         raise ValueError("The password must include at least one special character.")
 
     return True
-print(validate_user.__doc__)
-print(inspect.getdoc(validate_user))
+# print(validate_user.__doc__)
+# print(inspect.getdoc(validate_user))
 
 # Function to register the user if the input is valid
 def register_user(name, email, password):
@@ -66,18 +73,24 @@ def register_user(name, email, password):
         Dict.
 
     """    
-    try:
-        # Call validate_user to check if the user details are valid
-        if validate_user(name, email, password):
-            # If validation passes, create the user dictionary
-            user = {'name': name, 'email': email, 'password': password}
-            return user  # Return the created user dictionary
-    except ValueError as e:
-        # If validation fails, return the error message raised by validate_user
-        return str(e)  # Return the error message
+    # Validate the user inputs
+    if validate_user(name, email, password):
 
-# Example usage: Attempt to register a user with valid data
-print(register_user.__doc__)
-print(inspect.getdoc(register_user))
-user = register_user('John', 'john@example.uk.es.com', 'securePassword123!')
-print(user)  # Print the user dictionary if registration is successful
+        # If validation passes, create the user dictionary
+        return {'name': name, 'email': email, 'password': password}  # Return the created user dictionary
+    
+     # If validation fails, return False
+    return False
+
+if __name__ == "__main__":
+    try:
+        name = input("Enter your name: ").strip()
+        email = input("Enter your email: ").strip()
+        password = getpass("Enter your password (input will be hidden): ").strip()
+
+        user = register_user(name, email, password)
+        if user:
+            print("User registered successfully!")
+            print(user)
+    except ValueError as e:
+        print(f"Error: {e}")
